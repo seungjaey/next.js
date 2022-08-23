@@ -882,6 +882,9 @@ export default class Router implements BaseRouter {
    * @param options object you can define `shallow` and other options
    */
   push(url: Url, as?: Url, options: TransitionOptions = {}) {
+    console.log(
+      `NEXT : ROUTER : PUSH : ${url} : ${as} : ${process.env.__NEXT_SCROLL_RESTORATION}`
+    )
     if (process.env.__NEXT_SCROLL_RESTORATION) {
       // TODO: remove in the future when we update history before route change
       // is complete, as the popstate event should handle this capture.
