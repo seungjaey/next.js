@@ -883,7 +883,7 @@ export default class Router implements BaseRouter {
    */
   push(url: Url, as?: Url, options: TransitionOptions = {}) {
     console.log(
-      `NEXT : ROUTER : PUSH : ${url} : ${as} : ${process.env.__NEXT_SCROLL_RESTORATION}`
+      `[NEXT] : router/push : [BEFORE] : ROUTER PUSH : ${url} : ${as}`
     )
     if (process.env.__NEXT_SCROLL_RESTORATION) {
       // TODO: remove in the future when we update history before route change
@@ -899,6 +899,7 @@ export default class Router implements BaseRouter {
       }
     }
     ;({ url, as } = prepareUrlAs(this, url, as))
+    console.log(`[NEXT] : router/push : [AFTER] : ROUTER PUSH : ${url} : ${as}`)
     return this.change('pushState', url, as, options)
   }
 
@@ -1121,6 +1122,9 @@ export default class Router implements BaseRouter {
       ;(options as any)._shouldResolveHref = true
 
       if (process.env.__NEXT_HAS_REWRITES && as.startsWith('/')) {
+        console.log(
+          `[NEXT] : router/change : [BEFORE] : REWRITE : ${url} : ${as}`
+        )
         const rewritesResult = resolveRewrites(
           addBasePath(addLocale(cleanedAs, nextState.locale)),
           pages,
@@ -1135,6 +1139,9 @@ export default class Router implements BaseRouter {
           return true
         }
         resolvedAs = rewritesResult.asPath
+        console.log(
+          `[NEXT] : router/change : [MIDDLE] : REWRITE : ${url} : ${as} -> ${resolvedAs} : ${rewritesResult.matchedPage} : ${rewritesResult.resolvedHref}`
+        )
 
         if (rewritesResult.matchedPage && rewritesResult.resolvedHref) {
           // if this directly matches a page we need to update the href to
@@ -1145,6 +1152,10 @@ export default class Router implements BaseRouter {
         }
       } else {
         parsed.pathname = resolveDynamicRoute(pathname, pages)
+
+        console.log(
+          `[NEXT] : router/change : [MIDDLE-2] : REWRITE : ${url} : ${as} -> ${resolvedAs} : ${parsed.pathname}`
+        )
 
         if (parsed.pathname !== pathname) {
           pathname = parsed.pathname

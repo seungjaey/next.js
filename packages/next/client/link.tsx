@@ -85,7 +85,6 @@ function linkClicked(
   locale?: string | false
 ): void {
   const { nodeName } = e.currentTarget
-  console.log(`NEXT : LINK : ${nodeName}`)
 
   // anchors inside an svg have a lowercase nodeName
   const isAnchorNodeName = nodeName.toUpperCase() === 'A'
